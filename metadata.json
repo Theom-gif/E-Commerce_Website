@@ -1,0 +1,6 @@
+{
+  "name": "BookBase",
+  "description": "An elegant, editorial-grade publishing catalog and e-commerce bookstore featuring curated collections, responsive book listings, persistent cart management, custom checkout stepper, and user account profiles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
