@@ -259,10 +259,36 @@ const handleToggleBookmark = async (id: string) => {
 const handlePlaceOrder = async (newOrder: Order) => {
   if (isAuthenticated.value) {
     try {
-      await checkoutCart()
+      const response = await checkoutCart()
+      const backendOrder = response.order as any
+
+      let finalOrder = newOrder
+      if (backendOrder) {
+        finalOrder = {
+          ...newOrder,
+          id: String(backendOrder.id ?? backendOrder.order_number ?? newOrder.id),
+          date: backendOrder.created_at ? new Date(backendOrder.created_at).toLocaleDateString() : newOrder.date,
+          status: backendOrder.status ?? newOrder.status,
+        }
+      }
+
       const refreshedOrders = await fetchOrders(products.value)
-      orders.value = refreshedOrders.length ? refreshedOrders : [newOrder, ...orders.value]
-      return orders.value[0] ?? newOrder
+      
+      if (refreshedOrders.length > 0) {
+        // If the first returned order matches the newly created backend ID, augment it
+        // so we don't lose the local shipping address/discount which aren't saved in the backend.
+        if (refreshedOrders[0].id === finalOrder.id) {
+          refreshedOrders[0] = {
+            ...refreshedOrders[0],
+            shippingAddress: finalOrder.shippingAddress,
+            discountApplied: finalOrder.discountApplied,
+          }
+        }
+        orders.value = refreshedOrders
+      } else {
+        orders.value = [finalOrder, ...orders.value]
+      }
+      return finalOrder
     } catch (error) {
       console.warn('Unable to place checkout through API; keeping local order.', error)
     }

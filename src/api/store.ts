@@ -91,7 +91,7 @@ export async function fetchOrders(books: Book[]) {
 }
 
 export async function checkout() {
-  return api.post('/checkout')
+  return api.post<{ message?: string; order?: any }>('/checkout')
 }
 
 export async function askAssistant(message: string, limit = 5) {

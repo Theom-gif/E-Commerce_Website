@@ -11,11 +11,11 @@ When a user clicks "Place Order" in the checkout view:
 
 ## 2. API Client Request (`src/api/store.ts`)
 
-The `checkoutCart()` function makes a POST request to the backend API:
+The `checkoutCart()` function makes a POST request to the backend API. It is typed to read the specific `order` object returned by the backend:
 
 ```javascript
 export async function checkout() {
-  return api.post('/checkout')
+  return api.post<{ message?: string; order?: any }>('/checkout')
 }
 ```
 
@@ -46,8 +46,22 @@ Here is the exact sequence of how the backend "knows" and processes the order da
      $user->cart()->delete();
      ```
 
-4. **Return Response:** The backend responds with a success message and the newly created order object, which the frontend then uses to display the "Order Confirmed" success screen.
+4. **Return Response:** The backend responds with a success message and the newly created order object, complete with the database ID and creation timestamp.
+
+## 4. Frontend Success State Augmentation (`App.vue`)
+
+Once the backend successfully returns the securely generated order object, the frontend (`handlePlaceOrder`) receives it.
+
+Instead of trusting the locally generated IDs, the frontend **grabs the securely generated order object** from the API response. Because the backend doesn't store the recipient's shipping address for this flow, the frontend merges the server order with the local `shippingAddress`:
+
+```javascript
+// Augment the returned server order with the local shipping address 
+finalOrder = { ...response.order }
+finalOrder.shippingAddress = newOrder.shippingAddress
+```
+
+This updated object is then added to the top of the user's order history, allowing the frontend to flawlessly transition to the "Order Confirmed" success screen (in `CheckoutView.vue`) while displaying the exact server-side ID and the correct local shipping recipient.
 
 ## Summary
 
-In short, the frontend simply tells the backend **"the user is ready to checkout."** The backend securely looks up the user's saved cart, calculates the total price based on the actual database records, creates the order, and then empties the cart. This prevents malicious users from tampering with prices or quantities during the checkout request.
+In short, the frontend simply tells the backend **"the user is ready to checkout."** The backend securely looks up the user's saved cart, calculates the total price based on the actual database records, creates the order, and then empties the cart. The frontend then reads the generated order object from the response, augments it with un-saved local data like shipping info, and seamlessly displays the success receipt!
