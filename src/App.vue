@@ -7,6 +7,7 @@ import BookDetailView from './components/BookDetailView.vue'
 import CartSidebar from './components/CartSidebar.vue'
 import CheckoutView from './components/CheckoutView.vue'
 import AccountView from './components/AccountView.vue'
+import FavoriteView from './components/FavoriteView.vue'
 import ErrorView from './components/ErrorView.vue'
 import AuthView from './components/AuthView.vue'
 import {
@@ -536,14 +537,10 @@ const scrollToId = (id?: string) => {
             </button>
 
             <button
-              class="flex items-center px-3.5 py-2.5 rounded-2xl text-xs font-bold text-slate-400 hover:bg-slate-50 hover:text-slate-700 transition-all duration-300"
+              class="flex items-center px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all duration-300"
+              :class="currentView === 'favorite' ? 'bg-[#2563eb]/8 text-[#2563eb]' : 'text-slate-400 hover:bg-slate-50 hover:text-slate-700'"
               title="Quick Saves"
-              @click="
-                () => {
-                  handleNavigate('account')
-                  scrollToId('bookmarks-shelf')
-                }
-              "
+              @click="handleNavigate('favorite')"
             >
               <span>Favourite</span>
               <span
@@ -737,29 +734,6 @@ const scrollToId = (id?: string) => {
       class="flex-grow flex flex-col min-h-[calc(100vh-80px)] bg-[#f8fafc] w-full"
       id="right-workspace-panel"
     >
-      <!-- Catalog search bar -->
-      <div v-if="currentView === 'catalog'" class="px-4 md:px-8 py-4 bg-[#f8fafc]/50 border-b border-slate-100/50 flex items-center gap-4">
-        <div class="relative max-w-xl w-full flex items-center" id="search-input-parent">
-          <Search class="w-4 h-4 text-slate-400 absolute left-4.5 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search by book author, title or keywords directly..."
-            v-model="searchQuery"
-            @input="handleSearchKeyPress(searchQuery)"
-            class="w-full bg-white hover:bg-slate-50 focus:bg-white border border-slate-100 focus:border-[#2563eb]/20 text-xs py-3 pl-12 pr-10 rounded-2xl outline-none font-medium text-slate-700 transition-all placeholder-slate-400 shadow-2xs"
-            id="toolbar-search-input"
-          />
-          <button
-            v-if="searchQuery"
-            class="absolute right-3.5 text-slate-400 hover:text-slate-600 bg-slate-100 p-1 rounded-full text-xs"
-            title="Clear search"
-            @click="handleClearSearch"
-          >
-            <X class="w-3 h-3" />
-          </button>
-        </div>
-      </div>
-
       <!-- Views -->
       <main class="flex-grow py-5 md:py-8">
         <HomeView
@@ -816,6 +790,14 @@ const scrollToId = (id?: string) => {
           :currentUser="currentUser"
         />
 
+        <FavoriteView
+          v-if="currentView === 'favorite'"
+          :books="products"
+          :bookmarks="bookmarks"
+          :onSelectBook="handleSelectBook"
+          :onToggleBookmark="handleToggleBookmark"
+        />
+
         <AuthView
           v-if="currentView === 'auth'"
           :onAuthSuccess="handleAuthSuccess"
@@ -823,7 +805,7 @@ const scrollToId = (id?: string) => {
         />
 
         <ErrorView
-          v-if="!['home', 'catalog', 'detail', 'checkout', 'account', 'auth'].includes(currentView)"
+          v-if="!['home', 'catalog', 'detail', 'checkout', 'account', 'favorite', 'auth'].includes(currentView)"
           :onNavigateHome="() => handleNavigate('home')"
           :onNavigateCatalog="() => handleNavigate('catalog')"
         />

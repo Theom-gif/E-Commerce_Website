@@ -301,7 +301,8 @@ function toggleMode() {
   position: relative;
   padding: 2rem 1.5rem;
   color: #ffffff;
-  background: linear-gradient(145deg, #0f172a, #1d4ed8 68%, #2563eb);
+  background: #0f172a;
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
 .auth-close {
@@ -338,11 +339,11 @@ function toggleMode() {
 }
 
 .auth-brand h2 {
-  margin: 1.15rem 0 0;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-  font-weight: 900;
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 
 .auth-brand p {
@@ -363,15 +364,20 @@ function toggleMode() {
 .brand-points span {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
-  padding: 0.45rem 0.8rem;
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.brand-points span::before {
+  content: '•';
+  margin-right: 0.5rem;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .auth-panel {
@@ -380,11 +386,11 @@ function toggleMode() {
 
 .auth-toggle {
   display: inline-flex;
-  gap: 0.35rem;
-  padding: 0.35rem;
+  gap: 0.5rem;
+  padding: 0.25rem;
   border-radius: 9999px;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(248, 250, 252, 0.95);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(248, 250, 252, 0.6);
 }
 
 .auth-toggle button {
@@ -402,8 +408,9 @@ function toggleMode() {
 }
 
 .auth-toggle button.is-active {
-  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+  background: #0f172a;
   color: #ffffff;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
 .message {
@@ -465,11 +472,11 @@ function toggleMode() {
 
 .input-shell input {
   width: 100%;
-  min-height: 3rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(248, 250, 252, 0.95);
-  padding: 0.85rem 1rem 0.85rem 2.7rem;
+  min-height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0.6rem 1rem 0.6rem 2.5rem;
   color: #0f172a;
   font: inherit;
   outline: none;
@@ -477,8 +484,8 @@ function toggleMode() {
 }
 
 .input-shell input:focus {
-  border-color: rgba(37, 99, 235, 0.34);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
   background: #ffffff;
 }
 
@@ -492,14 +499,14 @@ function toggleMode() {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 3rem;
-  padding: 0.8rem 1.1rem;
-  border-radius: 1rem;
+  gap: 0.4rem;
+  min-height: 2.75rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 9999px;
   cursor: pointer;
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 900;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   transition:
     transform 220ms ease,
@@ -513,15 +520,15 @@ function toggleMode() {
 }
 
 .button-dark {
-  background: linear-gradient(135deg, #0f172a, #1d4ed8);
+  background: #0f172a;
   color: #ffffff;
-  box-shadow: 0 18px 35px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
 }
 
 .button-light {
-  background: rgba(248, 250, 252, 0.95);
+  background: rgba(255, 255, 255, 0.8);
   color: #0f172a;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 .button-icon {

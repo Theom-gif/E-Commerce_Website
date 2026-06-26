@@ -28,6 +28,17 @@ const hasInsidePages = computed(() => (props.book.insidePages?.length ?? 0) > 0)
 const currentInsidePage = computed(() => props.book.insidePages?.[insidePageIndex.value] ?? '')
 const ratingLabel = computed(() => props.book.rating.toFixed(1))
 
+const formattedPublishDate = computed(() => {
+  if (!props.book?.publishDate) return ''
+  try {
+    const d = new Date(props.book.publishDate)
+    if (isNaN(d.getTime())) return props.book.publishDate
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  } catch(e) {
+    return props.book.publishDate
+  }
+})
+
 function prevInsidePage() {
   if (insidePageIndex.value > 0) insidePageIndex.value--
 }
@@ -94,7 +105,7 @@ function setRating(nextRating: number) {
 
       <section class="hero-grid">
         <div class="cover-stage">
-          <div class="cover-card" :style="{ backgroundColor: book.bgAccent || '#1e293b' }">
+          <div class="cover-card">
             <img
               :src="book.coverImage"
               :alt="book.title"
@@ -132,7 +143,7 @@ function setRating(nextRating: number) {
           <div class="byline-row">
             <span>By <strong>{{ book.author }}</strong></span>
             <span class="dot">•</span>
-            <span>{{ book.publishDate }}</span>
+            <span>{{ formattedPublishDate }}</span>
             <span class="dot">•</span>
             <span class="rating-inline">
               <Star class="icon-sm star-filled" />
@@ -449,23 +460,24 @@ function setRating(nextRating: number) {
 .tabs-shell,
 .reader-card,
 .review-form-card {
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(255, 255, 255, 0.84);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  border: none;
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
 }
 
 .cover-stage {
-  padding: 1rem;
-  border-radius: 2rem;
+  padding: 0;
+  border-radius: 0;
 }
 
 .cover-card {
   position: relative;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
-  box-shadow: 0 20px 38px rgba(15, 23, 42, 0.18);
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+  background: #f8fafc;
 }
 
 .cover-image {
@@ -483,14 +495,16 @@ function setRating(nextRating: number) {
   gap: 0.45rem;
   border: 0;
   border-radius: 9999px;
-  padding: 0.7rem 0.95rem;
-  background: rgba(255, 255, 255, 0.95);
+  padding: 0.5rem 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
   color: #0f172a;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.18em;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
 }
 
 .bookmark-chip:hover {
@@ -522,8 +536,8 @@ function setRating(nextRating: number) {
 }
 
 .copy-stage {
-  border-radius: 2rem;
-  padding: 1.2rem;
+  border-radius: 0;
+  padding: 0 1.5rem;
 }
 
 .eyebrow-row {
@@ -560,9 +574,9 @@ function setRating(nextRating: number) {
 .copy-stage h1 {
   margin: 0.8rem 0 0;
   color: #0f172a;
-  font-size: clamp(2.4rem, 4.8vw, 4.4rem);
-  line-height: 0.97;
-  letter-spacing: -0.07em;
+  font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
   font-weight: 900;
 }
 
@@ -614,10 +628,10 @@ function setRating(nextRating: number) {
 }
 
 .info-card {
-  padding: 0.95rem 1rem;
-  border-radius: 1.15rem;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(248, 250, 252, 0.9);
+  padding: 0.75rem 0;
+  border: none;
+  border-bottom: 1px dashed rgba(15, 23, 42, 0.15);
+  background: transparent;
 }
 
 .info-card span {
@@ -639,14 +653,19 @@ function setRating(nextRating: number) {
 }
 
 .purchase-panel {
-  margin-top: 1.25rem;
-  display: grid;
-  grid-template-columns: 1fr;
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
   gap: 1rem;
-  padding: 1rem;
-  border-radius: 1.5rem;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(29, 78, 216, 0.98));
-  color: #ffffff;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.02);
+  backdrop-filter: blur(12px);
+  color: #0f172a;
 }
 
 .quantity-block,
@@ -659,7 +678,7 @@ function setRating(nextRating: number) {
 
 .quantity-block span,
 .price-block span {
-  color: rgba(255, 255, 255, 0.7);
+  color: #64748b;
   font-size: 0.62rem;
   font-weight: 900;
   letter-spacing: 0.2em;
@@ -671,39 +690,39 @@ function setRating(nextRating: number) {
   align-items: center;
   border-radius: 9999px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: rgba(255, 255, 255, 0.6);
   width: fit-content;
 }
 
 .quantity-controls button {
   appearance: none;
   border: 0;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2rem;
+  height: 2rem;
   background: transparent;
-  color: #ffffff;
+  color: #0f172a;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 700;
 }
 
 .quantity-controls strong {
-  min-width: 2.75rem;
+  min-width: 2rem;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .price-block strong {
-  color: #ffffff;
-  font-size: 1.6rem;
+  color: #0f172a;
+  font-size: 1.3rem;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
 }
 
 .price-block small {
-  color: rgba(255, 255, 255, 0.72);
-  font-size: 0.75rem;
+  color: #94a3b8;
+  font-size: 0.7rem;
 }
 
 .button {
@@ -712,14 +731,14 @@ function setRating(nextRating: number) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  min-height: 2.9rem;
-  padding: 0.82rem 1.15rem;
-  border-radius: 1rem;
+  gap: 0.4rem;
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
   cursor: pointer;
-  font-size: 0.68rem;
+  font-size: 0.64rem;
   font-weight: 900;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   transition:
     transform 220ms ease,
@@ -733,9 +752,9 @@ function setRating(nextRating: number) {
 }
 
 .button-dark {
-  background: #ffffff;
-  color: #0f172a;
-  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.14);
+  background: #0f172a;
+  color: #ffffff;
+  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
 }
 
 .button-light {
@@ -1063,8 +1082,8 @@ function setRating(nextRating: number) {
   }
 
   .hero-grid {
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-    gap: 1.5rem;
+    grid-template-columns: clamp(250px, 35vw, 420px) 1fr;
+    gap: 4rem;
     align-items: start;
   }
 
@@ -1073,8 +1092,7 @@ function setRating(nextRating: number) {
   }
 
   .purchase-panel {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
+    flex-wrap: nowrap;
   }
 
   .field-grid {

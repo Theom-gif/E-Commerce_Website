@@ -30,123 +30,95 @@ const computedSubtotal = computed(() => {
 <template>
   <Teleport to="body">
     <Transition name="cart-sidebar">
-      <div v-if="props.isOpen" class="fixed inset-0 z-50 overflow-hidden" id="cart-sidebar-overlay">
-        <!-- Backdrop screen filter -->
+      <div v-if="props.isOpen" class="cart-overlay" id="cart-sidebar-overlay">
         <Transition name="fade">
-          <div
-            class="absolute inset-0 bg-[#121212] backdrop-blur-xs cursor-pointer"
-            @click="props.onClose"
-          />
+          <div class="cart-backdrop" @click="props.onClose" />
         </Transition>
 
-        <div class="absolute inset-y-0 right-0 max-w-full flex">
-          <!-- Slide drawer chassis -->
+        <div class="cart-drawer-wrapper">
           <Transition name="slide-in">
-            <div
-              v-if="props.isOpen"
-              class="w-screen max-w-md bg-[#faf8f5] border-l border-[#ece8e0] shadow-2xl flex flex-col justify-between"
-              id="cart-drawer-panel"
-            >
-              <!-- Header block -->
-              <div class="px-6 py-5 border-b border-[#ece8e0] flex items-center justify-between">
-                <div class="flex items-center space-x-2.5">
-                  <ShoppingBag class="w-4 h-4 text-[#8f2619]" />
-                  <h3 class="font-serif text-lg font-bold text-[#121212]">
-                    Printed Ledger Cart
-                  </h3>
+            <div v-if="props.isOpen" class="cart-drawer" id="cart-drawer-panel">
+              <!-- Header -->
+              <div class="cart-header">
+                <div class="cart-header-left">
+                  <ShoppingBag class="header-icon" />
+                  <h3>Shopping Cart</h3>
                 </div>
                 <button
                   type="button"
                   @click="props.onClose"
-                  class="p-1.5 hover:bg-[#ece8e0] text-[#121212] transition-colors"
+                  class="close-btn"
                   id="close-cart-btn"
-                  title="Close Cart Drawer"
+                  title="Close cart"
                 >
-                  <X class="w-5 h-5" />
+                  <X class="close-icon" />
                 </button>
               </div>
 
-              <!-- Core cart list items body -->
-              <div class="flex-1 overflow-y-auto px-6 py-4 space-y-6">
-                <div v-if="props.cart.length === 0" class="h-full flex flex-col items-center justify-center p-8 text-center space-y-4">
-                  <div class="p-4 bg-[#f2efe9] text-[#a29c90]">
-                    <ShoppingBag class="w-8 h-8" />
+              <!-- Cart Items -->
+              <div class="cart-body">
+                <div v-if="props.cart.length === 0" class="cart-empty">
+                  <div class="empty-icon-wrap">
+                    <ShoppingBag class="empty-bag-icon" />
                   </div>
-                  <h4 class="font-serif text-lg font-bold text-[#121212]">Your Cart is Empty</h4>
-                  <p class="font-sans text-xs text-[#706a5e] max-w-xs leading-relaxed font-light">
-                    Browse the catalog records and select active limited printings to include in your local delivery ledger.
-                  </p>
-                  <button
-                    type="button"
-                    @click="props.onClose"
-                    class="bg-[#121212] hover:bg-[#8f2619] text-white px-5 py-2.5 font-mono text-[10px] uppercase tracking-widest rounded-none"
-                  >
-                    Return to Archive
+                  <h4>Your cart is empty</h4>
+                  <p>Browse the catalog and add items to get started.</p>
+                  <button type="button" class="browse-btn" @click="props.onClose">
+                    Browse catalog
                   </button>
                 </div>
-                <div v-else>
+
+                <div v-else class="cart-items">
                   <div
                     v-for="item in props.cart"
                     :key="item.book.id"
-                    class="flex space-x-4 border-b border-[#ece8e0]/60 pb-5 items-start"
+                    class="cart-item"
                     :id="'cart-item-' + item.book.id"
                   >
-                    <!-- Book Cover Thumbnail -->
-                    <div class="w-[70px] aspect-[3/4] bg-white border border-black/10 overflow-hidden flex-shrink-0">
+                    <div class="item-thumb-wrap">
                       <img
                         :src="item.book.coverImage"
                         :alt="item.book.title"
-                        class="w-full h-full object-cover"
+                        referrerpolicy="no-referrer"
                       />
                     </div>
 
-                    <div class="flex-1 space-y-2">
-                      <div>
-                        <p class="font-mono text-[9px] text-[#c49a45] uppercase tracking-wider font-bold">
-                          {{ item.book.category }}
-                        </p>
-                        <h4 class="font-serif text-sm font-bold text-[#121212] leading-tight">
-                          {{ item.book.title }}
-                        </h4>
-                        <p class="font-sans text-[11px] text-[#706a5e]">
-                          By {{ item.book.author }}
-                        </p>
+                    <div class="item-details">
+                      <div class="item-top">
+                        <span class="item-category">{{ item.book.category }}</span>
+                        <h4 class="item-title">{{ item.book.title }}</h4>
+                        <span class="item-author">{{ item.book.author }}</span>
                       </div>
 
-                      <!-- Modifiers row -->
-                      <div class="flex items-center justify-between">
-                        <div class="flex items-center border border-[#d8d3c5] bg-[#fbfaf7] text-xs">
+                      <div class="item-bottom">
+                        <div class="qty-controls">
                           <button
                             type="button"
                             @click="props.onUpdateQuantity(item.book.id, item.quantity - 1)"
-                            class="px-2 py-1 text-[#121212] hover:bg-[#ece8e0]"
                             :id="'cart-qty-decrem-' + item.book.id"
                           >
-                            <Minus class="w-3 h-3" />
+                            <Minus class="qty-icon" />
                           </button>
-                          <span class="px-3 font-mono font-medium">{{ item.quantity }}</span>
+                          <span class="qty-value">{{ item.quantity }}</span>
                           <button
                             type="button"
                             @click="props.onUpdateQuantity(item.book.id, item.quantity + 1)"
-                            class="px-2 py-1 text-[#121212] hover:bg-[#ece8e0]"
                             :id="'cart-qty-increm-' + item.book.id"
                           >
-                            <Plus class="w-3 h-3" />
+                            <Plus class="qty-icon" />
                           </button>
                         </div>
 
-                        <div class="flex items-center space-x-4">
-                          <span class="font-mono text-xs font-bold text-[#121212]">
-                            ${{ (item.book.price * item.quantity).toFixed(2) }}
-                          </span>
+                        <div class="item-price-row">
+                          <span class="item-price">${{ (item.book.price * item.quantity).toFixed(2) }}</span>
                           <button
                             type="button"
+                            class="trash-btn"
                             @click="props.onRemoveItem(item.book.id)"
-                            class="p-1 text-[#a29c90] hover:text-[#8f2619] transition-colors"
                             :id="'cart-trash-' + item.book.id"
-                            title="Delete Item"
+                            title="Remove item"
                           >
-                            <Trash2 class="w-3.5 h-3.5" />
+                            <Trash2 class="trash-icon" />
                           </button>
                         </div>
                       </div>
@@ -155,31 +127,25 @@ const computedSubtotal = computed(() => {
                 </div>
               </div>
 
-              <!-- Subtotal and proceed checkout pane -->
-              <div v-if="props.cart.length > 0" class="p-6 bg-[#f2efe9] border-t border-[#ece8e0] space-y-4">
-                <div class="space-y-2.5 font-mono text-xs">
-                  <div class="flex justify-between text-[#706a5e]">
-                    <span>LEDGER ITEMS</span>
-                    <span>{{ props.cart.reduce((s, i) => s + i.quantity, 0) }} UNITS</span>
-                  </div>
-                  <div class="flex justify-between text-[#121212] font-bold text-sm border-t border-[#d8d3c5]/55 pt-2">
-                    <span>SUBTOTAL</span>
-                    <span>${{ computedSubtotal.toFixed(2) }} USD</span>
-                  </div>
+              <!-- Footer / Checkout -->
+              <div v-if="props.cart.length > 0" class="cart-footer">
+                <div class="footer-row">
+                  <span class="footer-label">{{ props.cart.reduce((s, i) => s + i.quantity, 0) }} items</span>
+                  <span class="footer-label">Subtotal</span>
                 </div>
-
-                <p class="font-sans text-[10px] text-[#706a5e] leading-relaxed font-light italic">
-                  Tax calculations, custom binding choices, and certified courier transport variables will be appended on the checkout ledger.
-                </p>
-
+                <div class="footer-row footer-total">
+                  <span></span>
+                  <span>${{ computedSubtotal.toFixed(2) }}</span>
+                </div>
+                <p class="footer-note">Shipping and taxes calculated at checkout.</p>
                 <button
                   type="button"
+                  class="checkout-btn"
                   @click="props.onClose(); props.onGotoCheckout()"
-                  class="w-full bg-[#121212] hover:bg-[#8f2619] text-[#faf8f5] transition-all duration-300 py-3.5 px-6 font-mono text-xs uppercase tracking-widest flex items-center justify-center space-x-2 rounded-none"
                   id="checkout-trigger-btn"
                 >
-                  <span>Proceed to Delivery Stepper</span>
-                  <ArrowRight class="w-4 h-4" />
+                  <span>Proceed to checkout</span>
+                  <ArrowRight class="checkout-arrow" />
                 </button>
               </div>
             </div>
@@ -189,3 +155,384 @@ const computedSubtotal = computed(() => {
     </Transition>
   </Teleport>
 </template>
+
+<style scoped>
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.cart-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.cart-drawer-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.cart-drawer {
+  font-family: 'Outfit', sans-serif;
+  pointer-events: auto;
+  width: 100%;
+  max-width: 26rem;
+  background: #ffffff;
+  border-left: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: -8px 0 32px rgba(15, 23, 42, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* ─── Header ─── */
+.cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.cart-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.header-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #0f172a;
+}
+
+.cart-header h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.close-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.4rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.close-btn:hover {
+  color: #0f172a;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.close-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+/* ─── Body ─── */
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+}
+
+.cart-empty {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  padding: 2rem;
+}
+
+.empty-icon-wrap {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background: #f1f5f9;
+  display: grid;
+  place-items: center;
+}
+
+.empty-bag-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #94a3b8;
+}
+
+.cart-empty h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.cart-empty p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  max-width: 18rem;
+  line-height: 1.5;
+}
+
+.browse-btn {
+  appearance: none;
+  border: none;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 0.55rem 1.25rem;
+  border-radius: 9999px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.browse-btn:hover {
+  background: #1e293b;
+}
+
+/* ─── Cart Items ─── */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cart-item {
+  display: flex;
+  gap: 0.85rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.item-thumb-wrap {
+  width: 4rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.item-thumb-wrap img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.item-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.item-category {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.item-title {
+  margin: 0.1rem 0 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-author {
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.qty-controls {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  overflow: hidden;
+}
+
+.qty-controls button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.5rem;
+  cursor: pointer;
+  color: #334155;
+  transition: background-color 120ms ease;
+}
+
+.qty-controls button:hover {
+  background: #f1f5f9;
+}
+
+.qty-icon {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.qty-value {
+  min-width: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.item-price-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.item-price {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.trash-btn {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.3rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  color: #cbd5e1;
+  transition: color 150ms ease;
+}
+
+.trash-btn:hover {
+  color: #ef4444;
+}
+
+.trash-icon {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+/* ─── Footer ─── */
+.cart-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+  background: #f8fafc;
+}
+
+.footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.footer-total {
+  margin-top: 0.25rem;
+}
+
+.footer-total span {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.footer-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.checkout-btn {
+  appearance: none;
+  border: none;
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 9999px;
+  background: #0f172a;
+  color: #ffffff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.checkout-btn:hover {
+  background: #1e293b;
+}
+
+.checkout-arrow {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* ─── Transitions ─── */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 200ms ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-in-enter-active {
+  transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slide-in-leave-active {
+  transition: transform 200ms ease-in;
+}
+.slide-in-enter-from,
+.slide-in-leave-to {
+  transform: translateX(100%);
+}
+</style>
+

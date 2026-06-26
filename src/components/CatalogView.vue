@@ -179,7 +179,7 @@ function openSelectedFromQuickView() {
           class="book-card"
           @click="onSelectBook(book.id)"
         >
-          <div class="book-cover-shell" :style="{ backgroundColor: book.bgAccent || '#eab308' }">
+          <div class="book-cover-shell">
             <div class="book-cover-overlay" />
             <img
               :src="book.coverImage"
@@ -321,70 +321,85 @@ function openSelectedFromQuickView() {
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 38%),
-    radial-gradient(circle at 80% 18%, rgba(255, 176, 31, 0.12), transparent 28%),
-    linear-gradient(180deg, rgba(248, 250, 252, 0.96), rgba(248, 250, 252, 0.72));
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.05), transparent 45%),
+    radial-gradient(circle at 80% 18%, rgba(255, 176, 31, 0.08), transparent 35%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.98), rgba(241, 245, 249, 0.8));
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
 }
 
 .orb {
   position: absolute;
   border-radius: 9999px;
-  filter: blur(48px);
-  opacity: 0.65;
+  filter: blur(64px);
+  opacity: 0.7;
+  animation: float 8s ease-in-out infinite;
 }
 
 .orb-blue {
-  top: 4rem;
-  left: -3rem;
-  width: 15rem;
-  height: 15rem;
-  background: rgba(37, 99, 235, 0.18);
+  top: 2rem;
+  left: -5rem;
+  width: 20rem;
+  height: 20rem;
+  background: rgba(37, 99, 235, 0.25);
+  animation-delay: 0s;
 }
 
 .orb-amber {
-  top: 10rem;
-  right: -3rem;
-  width: 16rem;
-  height: 16rem;
-  background: rgba(255, 176, 31, 0.18);
+  top: 8rem;
+  right: -5rem;
+  width: 22rem;
+  height: 22rem;
+  background: rgba(255, 176, 31, 0.2);
+  animation-delay: 2s;
 }
 
 .orb-slate {
-  bottom: -4rem;
-  left: 36%;
-  width: 18rem;
-  height: 18rem;
-  background: rgba(15, 23, 42, 0.08);
+  bottom: -6rem;
+  left: 30%;
+  width: 24rem;
+  height: 24rem;
+  background: rgba(15, 23, 42, 0.12);
+  animation-delay: 4s;
 }
 
 .catalog-hero {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: 1fr;
-  align-items: end;
-  padding-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 1rem;
 }
 
 .catalog-hero__copy {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  align-items: center;
+  gap: 1.25rem;
 }
 
 .eyebrow {
-  align-self: flex-start;
+  align-self: center;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 0.95rem;
+  gap: 0.6rem;
+  padding: 0.5rem 1.15rem;
   border-radius: 9999px;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  background: rgba(255, 255, 255, 0.9);
-  color: #64748b;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  color: #334155;
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  font-size: 0.625rem;
+  letter-spacing: 0.25em;
+  font-size: 0.65rem;
   font-weight: 800;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
 .eyebrow-icon,
@@ -394,70 +409,73 @@ function openSelectedFromQuickView() {
 .book-footer__icon,
 .empty-state__icon,
 .button-icon {
-  width: 0.9rem;
-  height: 0.9rem;
+  width: 1rem;
+  height: 1rem;
   flex: 0 0 auto;
 }
 
 .catalog-hero__copy h1 {
   margin: 0;
-  color: #0f172a;
-  font-size: clamp(2.5rem, 5vw, 4.25rem);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
+  color: transparent;
+  background: linear-gradient(135deg, #0f172a 20%, #475569 80%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: clamp(3.2rem, 6vw, 5.5rem);
+  line-height: 1.1;
+  letter-spacing: -0.05em;
   font-weight: 900;
+  max-width: 60rem;
+  filter: drop-shadow(0 4px 12px rgba(15, 23, 42, 0.08));
 }
 
 .catalog-hero__copy p {
   margin: 0;
-  max-width: 42rem;
+  max-width: 44rem;
   color: #475569;
-  font-size: 0.98rem;
-  line-height: 1.8;
+  font-size: 1.1rem;
+  line-height: 1.7;
 }
 
 .catalog-stats {
-  display: grid;
-  gap: 0.75rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
 }
 
 .stat-card {
-  padding: 1rem;
-  border-radius: 1.35rem;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .stat-card span {
   display: block;
-  color: #94a3b8;
-  font-size: 0.64rem;
+  color: #64748b;
+  font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
 }
 
 .stat-card strong {
   display: block;
-  margin-top: 0.55rem;
   color: #0f172a;
-  font-size: clamp(1.45rem, 2vw, 2rem);
+  font-size: 1.6rem;
   line-height: 1;
   font-weight: 900;
 }
 
 .catalog-toolbar {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  grid-template-columns: 1fr;
-  padding: 1rem;
-  border-radius: 2rem;
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  background: rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(16px);
-  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  padding: 0;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .control-group {
@@ -467,22 +485,27 @@ function openSelectedFromQuickView() {
 }
 
 .control-group label {
-  color: #64748b;
-  font-size: 0.64rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
+  display: none; /* Hide labels for a cleaner, modern look */
 }
 
 .input-shell,
 .select-shell {
   display: flex;
   align-items: center;
-  min-height: 3rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(226, 232, 240, 1);
+  min-height: 2.75rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  transition: all 0.2s ease;
+}
+
+.input-shell:focus-within,
+.select-shell:focus-within {
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
   background: #ffffff;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  border-color: rgba(37, 99, 235, 0.3);
 }
 
 .input-shell input,
@@ -520,9 +543,9 @@ function openSelectedFromQuickView() {
 
 .pills-row {
   display: flex;
-  gap: 0.55rem;
+  gap: 0.75rem;
   overflow-x: auto;
-  padding-bottom: 0.1rem;
+  padding-bottom: 0.25rem;
   scrollbar-width: none;
 }
 
@@ -532,36 +555,41 @@ function openSelectedFromQuickView() {
 
 .pill {
   appearance: none;
-  border: 1px solid rgba(226, 232, 240, 1);
-  background: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(8px);
   color: #64748b;
   cursor: pointer;
   white-space: nowrap;
-  padding: 0.65rem 0.95rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 9999px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
   transition:
-    transform 220ms ease,
-    border-color 220ms ease,
-    color 220ms ease,
-    box-shadow 220ms ease,
-    background-color 220ms ease;
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 300ms ease,
+    color 300ms ease,
+    box-shadow 300ms ease,
+    background 300ms ease;
 }
 
 .pill:hover {
-  transform: translateY(-1px);
-  border-color: rgba(148, 163, 184, 0.45);
+  transform: translateY(-2px) scale(1.02);
+  border-color: rgba(148, 163, 184, 0.3);
+  background: rgba(255, 255, 255, 0.9);
   color: #0f172a;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
 }
 
 .pill.is-active {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   border-color: transparent;
   color: #ffffff;
-  box-shadow: 0 16px 28px rgba(37, 99, 235, 0.18);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
 }
 
 .catalog-summary {
@@ -665,7 +693,7 @@ function openSelectedFromQuickView() {
 
 .catalog-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
@@ -673,21 +701,21 @@ function openSelectedFromQuickView() {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-radius: 1.75rem;
-  border: 1px solid rgba(226, 232, 240, 1);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
   cursor: pointer;
   transition:
-    transform 220ms ease,
-    box-shadow 220ms ease,
-    border-color 220ms ease;
+    transform 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 350ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 350ms ease;
 }
 
 .book-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(37, 99, 235, 0.14);
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+  transform: translateY(-4px);
+  border-color: rgba(15, 23, 42, 0.12);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.06);
 }
 
 .book-cover-shell {
@@ -696,14 +724,22 @@ function openSelectedFromQuickView() {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  aspect-ratio: 4 / 5;
-  padding: 1rem;
+  aspect-ratio: 1 / 1;
+  padding: 1.5rem;
+  background: linear-gradient(180deg, #f8fafc, #f1f5f9);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.04);
 }
 
 .book-cover-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(15, 23, 42, 0.05);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0) 60%, rgba(15, 23, 42, 0.04) 100%);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.book-card:hover .book-cover-overlay {
+  opacity: 0.8;
 }
 
 .book-cover {
@@ -712,13 +748,14 @@ function openSelectedFromQuickView() {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 1rem;
-  box-shadow: 0 18px 34px rgba(15, 23, 42, 0.24);
-  transition: transform 420ms ease;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
+  transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 400ms ease;
 }
 
 .book-card:hover .book-cover {
-  transform: scale(1.03);
+  transform: scale(1.04) translateY(-2px);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.15);
 }
 
 .bookmark-button,
@@ -732,25 +769,35 @@ function openSelectedFromQuickView() {
   border-radius: 9999px;
   cursor: pointer;
   transition:
-    transform 220ms ease,
+    transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
     background-color 220ms ease,
-    color 220ms ease;
+    color 220ms ease,
+    opacity 300ms ease;
 }
 
 .bookmark-button {
-  top: 0.85rem;
-  left: 0.85rem;
+  top: 1rem;
+  left: 1rem;
   width: 2rem;
   height: 2rem;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
   color: #94a3b8;
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.book-card:hover .bookmark-button {
+  opacity: 1;
+  transform: scale(1);
 }
 
 .bookmark-button:hover {
-  transform: scale(1.08);
+  transform: scale(1.1);
   color: #ef4444;
+  background: #ffffff;
 }
 
 .bookmark-button__icon.is-active {
@@ -758,33 +805,41 @@ function openSelectedFromQuickView() {
   fill: currentColor;
 }
 
+.bookmark-button.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .quick-view-button {
-  left: 0.75rem;
-  right: 0.75rem;
-  bottom: 0.75rem;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translate(-50%, 12px);
   justify-content: center;
-  padding: 0.6rem 0.8rem;
-  background: rgba(15, 23, 42, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
   color: #ffffff;
   opacity: 0;
-  transform: translateY(8px);
   font-size: 0.6rem;
-  font-weight: 900;
-  letter-spacing: 0.18em;
+  font-weight: 800;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .book-card:hover .quick-view-button {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
 }
 
 .quick-view-button:hover {
   background: #2563eb;
+  transform: translate(-50%, -2px);
 }
 
 .book-meta {
-  padding: 1rem 1rem 0;
+  padding: 1.25rem 1.25rem 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
@@ -792,10 +847,10 @@ function openSelectedFromQuickView() {
 
 .book-category {
   margin: 0;
-  color: #94a3b8;
-  font-size: 0.64rem;
-  font-weight: 900;
-  letter-spacing: 0.24em;
+  color: #64748b;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -803,21 +858,21 @@ function openSelectedFromQuickView() {
   margin: 0;
   color: #0f172a;
   font-size: 0.95rem;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
-  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 800;
 }
 
 .book-author {
   margin: 0;
-  color: #64748b;
-  font-size: 0.78rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
 }
 
 .book-footer {
-  margin: 0 1rem 1rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid rgba(226, 232, 240, 1);
+  margin: auto 1.25rem 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(15, 23, 42, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -825,8 +880,8 @@ function openSelectedFromQuickView() {
 }
 
 .book-price {
-  color: #1e293b;
-  font-size: 0.88rem;
+  color: #0f172a;
+  font-size: 0.95rem;
   font-weight: 900;
 }
 
@@ -835,10 +890,15 @@ function openSelectedFromQuickView() {
   align-items: center;
   gap: 0.25rem;
   color: #2563eb;
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   font-weight: 900;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  transition: transform 250ms ease;
+}
+
+.book-card:hover .book-footer__arrow {
+  transform: translateX(4px);
 }
 
 .quickview-overlay {
@@ -848,91 +908,101 @@ function openSelectedFromQuickView() {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: rgba(15, 23, 42, 0.58);
-  backdrop-filter: blur(14px);
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(24px);
 }
 
 .quickview-modal {
   position: relative;
   width: 100%;
-  max-width: 64rem;
+  max-width: 68rem;
   max-height: 90vh;
   overflow: auto;
-  border-radius: 2rem;
-  border: 1px solid rgba(226, 232, 240, 0.96);
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-  box-shadow: 0 30px 80px rgba(2, 6, 23, 0.35);
+  border-radius: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98));
+  box-shadow: 0 40px 100px rgba(2, 6, 23, 0.4);
 }
 
 .quickview-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.5rem;
   display: grid;
   place-items: center;
-  width: 2.4rem;
-  height: 2.4rem;
-  border: 0;
-  border-radius: 0.85rem;
-  background: rgba(248, 250, 252, 0.95);
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 1rem;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(8px);
   color: #64748b;
   cursor: pointer;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  transition: all 250ms ease;
+  z-index: 10;
 }
 
 .quickview-close:hover {
   color: #0f172a;
+  background: #ffffff;
+  transform: scale(1.05);
 }
 
 .quickview-close__icon {
-  width: 1rem;
-  height: 1rem;
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .quickview-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
-  padding: 1.2rem;
+  gap: 2rem;
+  padding: 2rem;
 }
 
 .quickview-cover-panel {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
-  border-radius: 1.5rem;
-  background: linear-gradient(145deg, #e2e8f0, #f8fafc);
+  padding: 2rem;
+  border-radius: 2rem;
+  background: linear-gradient(135deg, rgba(226, 232, 240, 0.5), rgba(248, 250, 252, 0.8));
+  box-shadow: inset 0 2px 12px rgba(15, 23, 42, 0.04);
 }
 
 .quickview-cover {
-  max-width: 14rem;
+  max-width: 16rem;
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 1rem;
-  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.24);
+  border-radius: 1.25rem;
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.28);
 }
 
 .quickview-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 1.15rem;
+  justify-content: center;
 }
 
 .quickview-kicker {
   color: #64748b;
-  font-size: 0.64rem;
+  font-size: 0.7rem;
   font-weight: 900;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
 }
 
 .quickview-copy h3 {
   margin: 0;
-  color: #0f172a;
-  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: transparent;
+  background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
   line-height: 1.05;
   letter-spacing: -0.05em;
   font-weight: 900;
@@ -941,22 +1011,22 @@ function openSelectedFromQuickView() {
 .quickview-subline {
   margin: 0;
   color: #64748b;
-  font-size: 0.9rem;
-  line-height: 1.75;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .quickview-description {
   margin: 0;
   color: #475569;
-  font-size: 0.92rem;
+  font-size: 1rem;
   line-height: 1.8;
 }
 
 .quickview-meta {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: 0.65rem;
-  padding-top: 0.25rem;
+  gap: 0.85rem;
+  padding-top: 0.5rem;
 }
 
 .quickview-meta div {
@@ -964,9 +1034,11 @@ function openSelectedFromQuickView() {
   justify-content: space-between;
   gap: 0.75rem;
   color: #475569;
-  font-size: 0.74rem;
-  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  border-bottom: 1px dashed rgba(226, 232, 240, 1);
+  padding-bottom: 0.4rem;
 }
 
 .quickview-meta span {
@@ -975,48 +1047,57 @@ function openSelectedFromQuickView() {
 }
 
 .quickview-actions {
-  margin-top: 0.4rem;
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.15rem;
 }
 
 .quickview-price {
-  color: #1e293b;
-  font-size: 1rem;
+  color: #0f172a;
+  font-size: 1.25rem;
   font-weight: 900;
 }
 
 .quickview-buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.quick-view-enter-active,
+.quick-view-enter-active {
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
 .quick-view-leave-active {
-  transition: all 0.24s ease;
+  transition: opacity 250ms ease, transform 250ms ease;
 }
 
 .quick-view-enter-from,
 .quick-view-leave-to {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(24px) scale(0.98);
 }
 
 @media (min-width: 768px) {
   .catalog-shell {
-    padding-left: 2rem;
-    padding-right: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
   .catalog-toolbar {
-    grid-template-columns: 1.15fr 1.45fr 0.9fr;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
   }
 
-  .catalog-hero {
-    grid-template-columns: 1.3fr 0.8fr;
-    gap: 1.5rem;
+  .control-group {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  
+  .control-group:first-child {
+    flex: 1;
   }
 
   .quickview-grid {

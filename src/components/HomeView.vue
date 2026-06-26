@@ -135,7 +135,7 @@ const isBookmarked = (bookId: string) => props.bookmarks.includes(bookId)
             </div>
             
             <!-- Spotlight Image -->
-            <div class="relative aspect-square md:aspect-[4/3] rounded-[2rem] overflow-hidden bg-slate-100 flex items-center justify-center p-6 shadow-inner group-hover:bg-slate-50 transition-colors" :style="{ backgroundColor: spotlightBook.bgAccent || '#eab308' }">
+            <div class="relative aspect-square md:aspect-[4/3] rounded-[2rem] overflow-hidden bg-slate-100 flex items-center justify-center p-6 shadow-inner group-hover:bg-slate-50 transition-colors" :style="{ backgroundColor: spotlightBook.bgAccent || '#f1f5f9' }">
               <img :src="spotlightBook.coverImage" :alt="spotlightBook.title" referrerpolicy="no-referrer" class="relative z-10 w-2/3 h-auto max-h-[90%] object-cover rounded-xl shadow-[0_20px_40px_rgb(0,0,0,0.3)] group-hover:scale-105 group-hover:rotate-2 transition-transform duration-700 ease-out" />
             </div>
             
@@ -157,42 +157,6 @@ const isBookmarked = (bookId: string) => props.bookmarks.includes(bookId)
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <!-- Featured Grid -->
-      <section class="flex flex-col gap-10 mt-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div class="flex flex-col gap-2">
-            <h2 class="text-3xl font-black tracking-tight text-slate-900">Featured Books</h2>
-            <p class="text-sm text-slate-500 font-medium">A quick look at the strongest picks in the collection.</p>
-          </div>
-          <button type="button" @click="onNavigate('catalog')" class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 hover:text-blue-800 transition-colors group cursor-pointer">
-            <span>See all</span>
-            <ChevronRight class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <article v-for="book in featuredBooks" :key="book.id" @click="onSelectBook(book.id)" class="group cursor-pointer bg-white border border-slate-100 rounded-[2rem] p-5 shadow-sm hover:shadow-2xl hover:shadow-slate-200/60 hover:-translate-y-1.5 transition-all duration-400 flex flex-col gap-5">
-            <div class="relative aspect-[4/3] rounded-2xl overflow-hidden flex items-center justify-center p-6 bg-slate-100" :style="{ backgroundColor: book.bgAccent || '#eab308' }">
-              <div class="absolute inset-0 bg-black/5" />
-              <img :src="book.coverImage" :alt="book.title" referrerpolicy="no-referrer" class="relative z-10 w-auto h-full max-w-[85%] object-cover rounded-md shadow-xl group-hover:scale-105 group-hover:rotate-2 transition-transform duration-500" />
-            </div>
-            
-            <div class="flex flex-col gap-1.5 px-2">
-              <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">{{ book.category }}</p>
-              <h3 class="text-base font-bold text-slate-800 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">{{ book.title }}</h3>
-              <p class="text-xs text-slate-500 font-medium">{{ book.author }}</p>
-            </div>
-            
-            <div class="mt-auto px-2 flex items-center justify-between pt-4 border-t border-slate-100">
-              <span class="text-base font-black text-slate-900">${{ book.price.toFixed(2) }}</span>
-              <button type="button" @click.stop="onAddToCart(book)" class="px-4 py-2 bg-slate-100 hover:bg-slate-900 text-slate-600 hover:text-white text-[10px] font-bold uppercase tracking-wider rounded-xl transition-colors cursor-pointer">
-                Add
-              </button>
-            </div>
-          </article>
         </div>
       </section>
 
@@ -260,7 +224,7 @@ const isBookmarked = (bookId: string) => props.bookmarks.includes(bookId)
           
           <div class="flex flex-col gap-4">
             <article v-for="book in trendingBooks" :key="book.id" @click="onSelectBook(book.id)" class="group cursor-pointer flex items-center gap-5 p-3 pr-5 bg-slate-50 border border-transparent hover:border-slate-200 hover:bg-white rounded-2xl transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5">
-              <div class="relative w-16 h-20 rounded-xl overflow-hidden flex items-center justify-center shrink-0" :style="{ backgroundColor: book.bgAccent || '#eab308' }">
+              <div class="relative w-16 h-20 rounded-xl overflow-hidden flex items-center justify-center shrink-0" :style="{ backgroundColor: book.bgAccent || '#f1f5f9' }">
                 <img :src="book.coverImage" :alt="book.title" referrerpolicy="no-referrer" class="relative z-10 w-auto h-full max-w-[85%] object-cover rounded shadow-md group-hover:scale-105 transition-transform duration-500" />
               </div>
               
