@@ -1,21 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Outfit", system-ui, sans-serif;
-  --font-sans: "Outfit", system-ui, sans-serif;
+  --font-serif: "Inter", "Outfit", system-ui, sans-serif;
+  --font-sans: "Inter", "Outfit", system-ui, sans-serif;
   --font-mono: "Outfit", monospace;
-  
-  --color-primary-dark: #121826;
+
+  --color-primary-dark: #111827;
   --color-accent-blue: #2563eb;
-  --color-accent-amber: #ffb01f;
-  --color-offwhite: #f8fafc;
-  --color-chalk: #f1f5f9;
+  --color-accent-amber: #f59e0b;
+  --color-offwhite: #f7f8fa;
+  --color-chalk: #f3f4f6;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: "Outfit", var(--font-sans);
-  background-color: #f1f5f9;
-  color: var(--color-primary-dark);
+  font-family: "Inter", "Outfit", system-ui, sans-serif;
+  background-color: #f7f8fa;
+  color: #111827;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  line-height: 1.5;
+}
+
+/* Remove default button appearance */
+button {
+  font-family: inherit;
+}
+
+/* Custom scrollbar for browsers that support it */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* Focus visible ring */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
