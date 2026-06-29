@@ -10,6 +10,7 @@ import AccountView from './components/AccountView.vue'
 import FavoriteView from './components/FavoriteView.vue'
 import ErrorView from './components/ErrorView.vue'
 import AuthView from './components/AuthView.vue'
+import AuthModal from './components/AuthModal.vue'
 import {
   Compass,
   Grid,
@@ -89,6 +90,7 @@ const isAudioDrawerOpen = ref(false)
 const isDownloadModalOpen = ref(false)
 const isSupportChatOpen = ref(false)
 const isMobileMenuOpen = ref(false)
+const isAuthModalOpen = ref(false)
 
 const persistUser = (user: { name: string; email: string }) => {
   currentUser.value = user
@@ -164,11 +166,13 @@ watch([currentView, activeBookId], () => {
 })
 
 const handleNavigate = (view: string) => {
-  if (view === 'account' && !isAuthenticated.value) {
-    currentView.value = 'auth' as any
-  } else {
-    currentView.value = view as any
+  if ((view === 'account' || view === 'favorite') && !isAuthenticated.value) {
+    isAuthModalOpen.value = true
+    isMobileMenuOpen.value = false
+    return
   }
+  
+  currentView.value = view as any
   isMobileMenuOpen.value = false
   if (view !== 'detail') {
     activeBookId.value = null
@@ -181,6 +185,11 @@ const handleSelectBook = (id: string) => {
 }
 
 const handleAddToCart = async (book: Book, quantity = 1) => {
+  if (!isAuthenticated.value) {
+    isAuthModalOpen.value = true
+    return
+  }
+
   const prev = cart.value
   const idx = prev.findIndex((item) => item.book.id === book.id)
   if (idx > -1) {
@@ -190,8 +199,6 @@ const handleAddToCart = async (book: Book, quantity = 1) => {
   } else {
     cart.value = [...prev, { book, quantity }]
   }
-
-  if (!isAuthenticated.value) return
 
   try {
     await addCartItem(book, quantity)
@@ -234,6 +241,11 @@ const handleRemoveItem = async (bookId: string) => {
 }
 
 const handleToggleBookmark = async (id: string) => {
+  if (!isAuthenticated.value) {
+    isAuthModalOpen.value = true
+    return
+  }
+
   const prev = [...bookmarks.value]
   const book = products.value.find((item) => item.id === id)
   const wasSaved = prev.includes(id)
@@ -243,7 +255,7 @@ const handleToggleBookmark = async (id: string) => {
     bookmarks.value = [...prev, id]
   }
 
-  if (!isAuthenticated.value || !book) return
+  if (!book) return
 
   try {
     if (wasSaved) {
@@ -813,6 +825,13 @@ const scrollToId = (id?: string) => {
 
       <Footer />
     </div>
+
+    <!-- AUTH MODAL -->
+    <AuthModal
+      :isOpen="isAuthModalOpen"
+      :onClose="() => (isAuthModalOpen = false)"
+      :onAuthSuccess="handleAuthSuccess"
+    />
 
     <!-- CART SIDEBAR -->
     <CartSidebar

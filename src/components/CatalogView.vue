@@ -492,20 +492,19 @@ function openSelectedFromQuickView() {
 .select-shell {
   display: flex;
   align-items: center;
-  min-height: 2.75rem;
+  min-height: 3.25rem;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  background: #ffffff;
+  border: none;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02);
   transition: all 0.2s ease;
 }
 
 .input-shell:focus-within,
 .select-shell:focus-within {
-  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.12);
-  background: #ffffff;
-  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.08);
+  outline: 2px solid rgba(37, 99, 235, 0.4);
+  outline-offset: 2px;
 }
 
 .input-shell input,
@@ -514,14 +513,15 @@ function openSelectedFromQuickView() {
   border: 0;
   outline: none;
   background: transparent;
-  padding: 0.85rem 1rem;
+  padding: 0 1.5rem;
   color: #0f172a;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .input-shell input::placeholder {
   color: #94a3b8;
+  font-weight: 600;
 }
 
 .select-shell {
@@ -531,21 +531,23 @@ function openSelectedFromQuickView() {
 .select-shell select {
   appearance: none;
   cursor: pointer;
-  padding-right: 2.6rem;
+  padding-right: 3.5rem;
 }
 
 .select-shell__icon {
   position: absolute;
-  right: 0.95rem;
-  color: #94a3b8;
+  right: 1.25rem;
+  color: #64748b;
   pointer-events: none;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 .pills-row {
   display: flex;
   gap: 0.75rem;
   overflow-x: auto;
-  padding-bottom: 0.25rem;
+  padding-bottom: 0.5rem;
   scrollbar-width: none;
 }
 
@@ -555,41 +557,41 @@ function openSelectedFromQuickView() {
 
 .pill {
   appearance: none;
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(8px);
+  border: none;
+  background: #ffffff;
   color: #64748b;
   cursor: pointer;
   white-space: nowrap;
-  padding: 0.75rem 1.25rem;
+  padding: 0 1.5rem;
+  min-height: 3.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 9999px;
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02);
   transition:
     transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
-    border-color 300ms ease,
     color 300ms ease,
     box-shadow 300ms ease,
     background 300ms ease;
 }
 
 .pill:hover {
-  transform: translateY(-2px) scale(1.02);
-  border-color: rgba(148, 163, 184, 0.3);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  background: #f8fafc;
   color: #0f172a;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
 
 .pill.is-active {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  border-color: transparent;
+  background: #2563eb;
   color: #ffffff;
-  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.3);
-  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.25);
+  transform: translateY(0);
 }
 
 .catalog-summary {
